@@ -46,6 +46,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
   normal_distribution<double> dist_x(x, std[0]);
   normal_distribution<double> dist_y(y, std[1]);
   normal_distribution<double> dist_theta(y, std[2]);
+  std::default_random_engine gen;
   gen.seed(5);
   for (int i = 0; i < num_particles; i++) {
 	  Particle p = Particle();
@@ -69,6 +70,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    *  http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
    *  http://www.cplusplus.com/reference/random/default_random_engine/
    */
+	std::default_random_engine gen;
 	normal_distribution<double> dist_x(0, std_pos[0]);
 	normal_distribution<double> dist_y(0, std_pos[1]);
 	normal_distribution<double> dist_theta(0, std_pos[2]);
@@ -151,7 +153,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		vector<LandmarkObs> lmark_predictions;
 
 
-		for (int j = 0; j < map_landmarks.landmark_list.size(); j++) {
+		for (unsigned int j = 0; j < map_landmarks.landmark_list.size(); j++) {
 
 			//Get id and x,y coordinates
 			int lmark_id = map_landmarks.landmark_list[j].id_i;
@@ -167,7 +169,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
 		//Create and populate a copy of the list of observations transformed from vehicle coordinates to map coordinates
 		vector<LandmarkObs> transfrmd_obs;
-		for (int j = 0; j < observations.size(); j++) {
+		for (unsigned int j = 0; j < observations.size(); j++) {
 			double t_x = cos(particle_theta)*observations[j].x - sin(particle_theta)*observations[j].y + particle_x;
 			double t_y = sin(particle_theta)*observations[j].x + cos(particle_theta)*observations[j].y + particle_y;
 			transfrmd_obs.push_back(LandmarkObs{ observations[j].id, t_x, t_y });
@@ -176,7 +178,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		//Data association for the predictions and transformed observations on current particle
 		dataAssociation(lmark_predictions, transfrmd_obs);
 		particles[i].weight = 1.0;
-		for (int j = 0; j < transfrmd_obs.size(); j++) {
+		for (unsigned int j = 0; j < transfrmd_obs.size(); j++) {
 			double o_x, o_y, pr_x, pr_y;
 			o_x = transfrmd_obs[j].x;
 			o_y = transfrmd_obs[j].y;
@@ -225,7 +227,7 @@ void ParticleFilter::resample() {
    *   http://en.cppreference.com/w/cpp/numeric/random/discrete_distribution
    */
 
-
+	std::default_random_engine gen;
 	// Find max weight mw= max(w)
 	vector<double> weights;
 	double maxWeight = std::numeric_limits<double>::min();

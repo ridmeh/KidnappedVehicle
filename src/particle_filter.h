@@ -98,7 +98,7 @@ class ParticleFilter {
                        const std::vector<double>& sense_x, 
                        const std::vector<double>& sense_y);
 
-  static double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y);
+  static double ParticleFilter::multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y);
   /**
    * initialized Returns whether particle filter is initialized yet or not.
    */
@@ -124,7 +124,7 @@ class ParticleFilter {
   
   // Vector of weights of all particles
   std::vector<double> weights; 
-  std::default_random_engine gen;
+  //std::default_random_engine gen;
 };
 
 #endif  // PARTICLE_FILTER_H_
