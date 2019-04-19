@@ -11,7 +11,10 @@
 
 #include <string>
 #include <vector>
+#include <random>
 #include "helper_functions.h"
+using std::default_random_engine;
+using std::mersenne_twister_engine;
 
 struct Particle {
   int id;
@@ -95,6 +98,7 @@ class ParticleFilter {
                        const std::vector<double>& sense_x, 
                        const std::vector<double>& sense_y);
 
+  static double multiv_prob(double sig_x, double sig_y, double x_obs, double y_obs, double mu_x, double mu_y);
   /**
    * initialized Returns whether particle filter is initialized yet or not.
    */
@@ -120,6 +124,7 @@ class ParticleFilter {
   
   // Vector of weights of all particles
   std::vector<double> weights; 
+  std::default_random_engine gen;
 };
 
 #endif  // PARTICLE_FILTER_H_
